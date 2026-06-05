@@ -55,7 +55,17 @@ MatrixDebugBoard/
 
 ## 📄 许可证 / License
 
-*待定 / To be determined*
+本项目采用 **CC BY-NC-SA 4.0** 许可证（署名-非商业使用-相同方式共享 4.0 国际）。
+
+This work is licensed under a **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License**.
+
+- ✅ 您可以自由地：共享、复制、分发、展览、表演、修改
+- ✅ You are free to: Share, copy, distribute, display, perform, modify
+- ❌ **禁止商业使用 / NonCommercial** — 不得将本作品用于商业目的
+- 🔗 **相同方式共享 / ShareAlike** — 如果对作品进行修改，必须使用相同的许可证发布
+
+完整许可证文本请查看 [LICENSE](./LICENSE) 文件。
+See the [LICENSE](./LICENSE) file for the full license text.
 
 ---
 
