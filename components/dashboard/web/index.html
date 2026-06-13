@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>MatrixDebugBoard</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <div class="app-brand">
+      <div class="logo">M</div>
+      <div>
+        <div class="brand-name">MatrixDebugBoard</div>
+        <div class="brand-sub">ESP32-S3 · RS485 · CAN · Flash</div>
+      </div>
+    </div>
+    <div id="status-bar" class="status-bar">
+      <span class="pill"><span class="dot"></span>Loading…</span>
+    </div>
+  </header>
+  <nav class="tabs" id="tab-nav"></nav>
+  <main class="content" id="content">
+    <div class="card"><div class="empty">Loading…</div></div>
+  </main>
+</div>
+<div id="toast-stack" class="toast-stack"></div>
+<script src="/app.js"></script>
+</body>
+</html>

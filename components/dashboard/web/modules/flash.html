@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title" data-i18n="fm_title">文件管理</div>
+      <div class="card-sub" data-i18n="fm_sub">存储在外部 Flash · W25Q128 · 16 MB</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-sm btn-ghost" id="fm-refresh-btn" data-i18n="refresh">刷新</button>
+      <button class="btn btn-sm btn-danger" id="fm-format-btn" data-i18n="fm_format_btn">格式化存储</button>
+    </div>
+  </div>
+  <dl class="kv-grid" id="fm-info">
+    <div><dt data-i18n="fm_file_count">文件数</dt><dd id="fm-count">—</dd></div>
+    <div><dt data-i18n="fm_capacity">总容量</dt><dd>16 MB · W25Q128</dd></div>
+  </dl>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="fm_file_list">文件列表</div>
+  <div id="fm-file-list">
+    <div class="empty" data-i18n="fm_loading">加载中…</div>
+  </div>
+</div>

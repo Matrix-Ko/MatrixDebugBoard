@@ -1,0 +1,119 @@
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title" data-i18n="rs485_title">RS485 调试</div>
+      <div class="card-sub" data-i18n="rs485_sub">UART2 · TX=IO8 · RX=IO9 · DE=IO46 · RE=IO16</div>
+    </div>
+    <button class="btn btn-sm btn-ghost" onclick="rs485RefreshStatus()" data-i18n="refresh">刷新</button>
+  </div>
+  <dl class="kv-grid" id="rs485-stat"><dt>—</dt><dd>—</dd></dl>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="port_cfg">端口设置</div>
+  <div class="row">
+    <div class="field" style="max-width:150px">
+      <span data-i18n="baud_rate">波特率</span>
+      <select id="rs485-baud-sel">
+        <option value="1200">1200</option>
+        <option value="2400">2400</option>
+        <option value="4800">4800</option>
+        <option value="9600" selected>9600</option>
+        <option value="19200">19200</option>
+        <option value="38400">38400</option>
+        <option value="57600">57600</option>
+        <option value="115200">115200</option>
+        <option value="230400">230400</option>
+        <option value="460800">460800</option>
+        <option value="921600">921600</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:70px">
+      <span data-i18n="data_bits">数据位</span>
+      <select id="rs485-bits-sel">
+        <option value="8" selected>8</option>
+        <option value="7">7</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:110px">
+      <span data-i18n="parity_bits">校验位</span>
+      <select id="rs485-parity-sel">
+        <option value="0" selected data-i18n="parity_none">无 (None)</option>
+        <option value="1" data-i18n="parity_even">偶 (Even)</option>
+        <option value="2" data-i18n="parity_odd">奇 (Odd)</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:70px">
+      <span data-i18n="stop_bits">停止位</span>
+      <select id="rs485-stop-sel">
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:120px">
+      <span data-i18n="disp_fmt">显示格式</span>
+      <select id="rs485-disp-sel">
+        <option value="hex" selected>HEX</option>
+        <option value="ascii">ASCII</option>
+        <option value="both">HEX + ASCII</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:120px">
+      <span data-i18n="send_fmt">发送格式</span>
+      <select id="rs485-fmt-sel">
+        <option value="hex" selected data-i18n="fmt_hex">HEX 字节流</option>
+        <option value="ascii" data-i18n="fmt_ascii">ASCII 文本</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:130px">
+      <span data-i18n="eol_ascii">行尾 (ASCII)</span>
+      <select id="rs485-eol-sel">
+        <option value="" selected data-i18n="eol_none">无</option>
+        <option value="0D">CR  (\r)</option>
+        <option value="0A">LF  (\n)</option>
+        <option value="0D0A">CRLF (\r\n)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="rs485-apply-btn" style="align-self:flex-end" data-i18n="apply">应用</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="txrx_log">收发日志</div>
+    <div class="row" style="gap:6px;align-items:center">
+      <span id="rs485-log-count" style="font-size:12px;color:var(--text2)">0 帧</span>
+      <button class="btn btn-sm" id="rs485-pause-btn" data-i18n="pause_btn">⏸ 暂停</button>
+      <button class="btn btn-sm" id="rs485-clear-btn" data-i18n="clear">清空</button>
+      <button class="btn btn-sm btn-ghost" id="rs485-export-btn" data-i18n="export_log">导出</button>
+      <button class="btn btn-sm btn-ghost" onclick="showSaveModal('rs485')" data-i18n="save_to_flash">保存到Flash</button>
+    </div>
+  </div>
+  <div class="console" id="rs485-console"></div>
+  <hr class="divider" style="margin:12px 0">
+  <div class="row">
+    <input type="text" id="rs485-send-input" placeholder="HEX: 01 03 00 00 00 01  或切换 ASCII 模式" data-i18n-ph="rs485_input_ph" style="flex:1;font-family:var(--mono)" autocomplete="off" spellcheck="false">
+    <button class="btn btn-primary" id="rs485-send-btn" data-i18n="send">发送</button>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:12px;color:var(--text2);white-space:nowrap" data-i18n="auto_send">自动发送</span>
+    <input type="number" id="rs485-interval" value="1000" min="20" max="60000" style="width:72px" placeholder="ms">
+    <span style="font-size:12px;color:var(--text2)">ms ×</span>
+    <input type="number" id="rs485-auto-count" value="-1" min="-1" max="9999" style="width:56px" title="-1 = 无限次">
+    <button class="btn btn-sm" id="rs485-auto-btn" data-i18n="start_btn">▶ 开始</button>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">
+    <button class="btn btn-sm btn-ghost" id="rs485-crc-btn" data-i18n="crc16_btn">CRC16</button>
+    <button class="btn btn-sm btn-ghost" onclick="rs485FillPreset('01 03 00 00 00 01')" data-i18n="modbus_read">Modbus读</button>
+    <button class="btn btn-sm btn-ghost" onclick="rs485FillPreset('01 06 00 01 00 0A')" data-i18n="modbus_write">Modbus写</button>
+    <button class="btn btn-sm btn-ghost" onclick="rs485FillPreset('FF FF FF FF')">FF×4</button>
+    <button class="btn btn-sm btn-ghost" onclick="rs485FillPreset('00 00 00 00')">00×4</button>
+  </div>
+  <div class="hist-panel">
+    <div class="hist-header">
+      <span class="hist-label" data-i18n="send_hist">发送历史</span>
+      <button class="btn btn-sm btn-ghost" id="rs485-hist-clear-btn" data-i18n="clear">清空</button>
+    </div>
+    <div class="hist-list" id="rs485-hist-panel"></div>
+  </div>
+</div>

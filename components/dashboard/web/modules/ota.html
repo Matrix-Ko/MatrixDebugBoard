@@ -1,0 +1,60 @@
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="ota_fw_title">固件版本</div>
+    <button class="btn btn-sm btn-ghost" id="ota-refresh-btn" data-i18n="refresh">刷新</button>
+  </div>
+  <dl class="kv-grid" id="ota-fw-grid">
+    <div><dt data-i18n="fw_cur">当前版本</dt><dd id="ota-local-ver">—</dd></div>
+    <div><dt data-i18n="fw_srv">服务器版本</dt><dd id="ota-remote-ver">—</dd></div>
+    <div><dt data-i18n="upg_state">升级状态</dt><dd id="ota-state-cell">—</dd></div>
+    <div><dt data-i18n="upg_notes">更新说明</dt><dd id="ota-notes">—</dd></div>
+  </dl>
+</div>
+
+<div class="card" id="ota-progress-card" style="display:none">
+  <div class="card-title" style="margin-bottom:10px" data-i18n="upg_progress">升级进度</div>
+  <div class="progress-wrap">
+    <div class="progress-bar" id="ota-prog-bar" style="width:0%"></div>
+  </div>
+  <div id="ota-prog-text" style="text-align:center;margin-top:6px;font-size:13px;color:var(--text2)">0%</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="srv_cfg">服务器配置</div>
+  <div class="card-help" style="margin-bottom:10px" data-i18n="ota_srv_help">
+    填写服务器上的版本检测文件地址（JSON），格式：<br>
+    <code style="font-size:11px;color:var(--accent)">{"version":"1.1.0","url":"http://server/firmware.bin","notes":"更新说明"}</code>
+  </div>
+  <div style="margin-bottom:10px">
+    <label class="form-label" style="display:block;margin-bottom:4px" data-i18n="manifest_url_lbl">检测地址 (manifest URL)</label>
+    <input type="text" class="input" id="ota-url-input"
+           placeholder="http://your-server.com/firmware/version.json"
+           style="width:100%;box-sizing:border-box">
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px">
+      <input type="checkbox" id="ota-auto-chk"> <span data-i18n="auto_check_lbl">自动检测更新</span>
+    </label>
+    <label style="display:flex;align-items:center;gap:6px;font-size:13px">
+      <span data-i18n="interval_prefix">每隔</span>
+      <input type="number" class="input" id="ota-interval-input"
+             min="1" max="10080" value="60"
+             style="width:72px;padding:4px 8px;text-align:center">
+      <span data-i18n="interval_suffix">分钟</span>
+    </label>
+  </div>
+  <button class="btn btn-primary" id="ota-save-btn" data-i18n="save_cfg">保存配置</button>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="actions">操作</div>
+  <div class="row" style="gap:10px;flex-wrap:wrap">
+    <button class="btn btn-primary" id="ota-check-btn" data-i18n="check_update">检测更新</button>
+    <button class="btn" id="ota-update-btn"
+            style="display:none;background:var(--warn);border-color:var(--warn);color:#fff"
+            data-i18n="update_now">
+      立即升级
+    </button>
+  </div>
+  <div id="ota-status-msg" class="card-help" style="margin-top:10px;min-height:16px"></div>
+</div>

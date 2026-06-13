@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="sys_info">系统信息</div>
+    <button class="btn btn-sm btn-ghost" id="btn-sys-refresh" data-i18n="refresh">刷新</button>
+  </div>
+  <dl class="kv-grid" id="sys-info"><dt>—</dt><dd>—</dd></dl>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="sys_stats_title">资源占用率</div>
+    <button class="btn btn-sm btn-ghost" id="btn-stats-refresh" data-i18n="refresh">刷新</button>
+  </div>
+  <div id="sys-stats-body" style="display:flex;flex-direction:column;gap:12px">
+    <div class="stats-row">
+      <div class="stats-label"><span data-i18n="stats_cpu">CPU</span><span id="stats-cpu-pct" class="stats-val">—%</span></div>
+      <div class="stats-bar-bg"><div id="stats-cpu-bar" class="stats-bar" style="width:0%"></div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stats-label"><span data-i18n="stats_mem">内存 (Heap)</span><span id="stats-mem-pct" class="stats-val">—%</span></div>
+      <div class="stats-bar-bg"><div id="stats-mem-bar" class="stats-bar" style="width:0%"></div></div>
+      <div id="stats-mem-detail" class="stats-detail">—</div>
+    </div>
+    <div class="stats-row">
+      <div class="stats-label"><span data-i18n="stats_flash">外部 Flash 存储</span><span id="stats-flash-pct" class="stats-val">—%</span></div>
+      <div class="stats-bar-bg"><div id="stats-flash-bar" class="stats-bar" style="width:0%"></div></div>
+      <div id="stats-flash-detail" class="stats-detail">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="term_res">终端电阻控制</div>
+  <div class="card-help" style="margin-bottom:10px" data-i18n="term_res_help">
+    IO42 继电器控制 CAN 和 RS485 的 120Ω 终端电阻。<br>
+    打开：接入终端电阻（标准组网必须，最后一个节点打开）<br>
+    关闭：断开终端电阻（中间节点或 Self-Test 模式可关闭）
+  </div>
+  <div class="relay-toggle">
+    <label class="switch">
+      <input type="checkbox" id="relay-chk">
+      <span class="slider"></span>
+    </label>
+    <span style="font-size:13px" data-i18n="term_res_120">120Ω 终端电阻</span>
+    <span id="relay-state" class="tag">OFF</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="theme_title">界面主题色</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center" id="theme-palette"></div>
+  <div class="card-help" style="margin-top:8px" data-i18n="theme_help">点击色块切换全局主视觉颜色，自动保存。</div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:10px" data-i18n="ai_sys_entry_title">AI 通讯分析</div>
+  <div class="card-help" style="margin-bottom:10px" data-i18n="ai_sys_entry_help">
+    可对 RS485 / CAN / UART 数据进行智能分析，支持 OpenAI 和 Anthropic 两种 API 格式，具备 Agent 工具调用能力。
+  </div>
+  <button class="btn btn-primary btn-sm" onclick="window.App&&window.App.switchTab('ai')" data-i18n="ai_go_tab">前往 AI 助手</button>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="sys_ops">系统操作</div>
+  <div class="row">
+    <button class="btn btn-danger" id="btn-reboot" data-i18n="reboot">重启设备</button>
+  </div>
+  <div class="card-help" style="margin-top:8px" data-i18n="reboot_help">
+    重启后设备将自动重新连接上次保存的 WiFi 网络，AP 热点始终保持开启。
+  </div>
+</div>

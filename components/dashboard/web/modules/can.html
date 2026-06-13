@@ -1,0 +1,132 @@
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title" data-i18n="can_title">CAN 总线调试</div>
+      <div class="card-sub" data-i18n="can_sub">TWAI · TX=IO6 · RX=IO7 · ISO 11898</div>
+    </div>
+    <button class="btn btn-sm btn-ghost" onclick="canRefreshStatus()" data-i18n="refresh">刷新</button>
+  </div>
+  <div class="row" style="align-items:center;gap:14px;flex-wrap:wrap">
+    <span class="dot" id="can-state-dot"></span>
+    <span id="can-state-label" style="font-size:13px;font-weight:600">—</span>
+    <span style="color:var(--border)">│</span>
+    <span id="can-tx-err" style="font-size:12px;color:var(--text2)">TX Err: 0</span>
+    <span id="can-rx-err" style="font-size:12px;color:var(--text2)">RX Err: 0</span>
+    <span style="color:var(--border)">│</span>
+    <span id="can-tx-cnt" style="font-size:12px;color:var(--tx-col)">↑ TX 0</span>
+    <span id="can-rx-cnt" style="font-size:12px;color:var(--rx-col)">↓ RX 0</span>
+    <button class="btn btn-sm btn-danger" id="can-recover-btn" data-i18n="recover_bus">恢复总线</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="can_cfg">CAN 设置</div>
+  <div class="row">
+    <div class="field" style="max-width:160px">
+      <span data-i18n="baud_rate">波特率</span>
+      <select id="can-baud-sel">
+        <option value="25000">25 Kbps</option>
+        <option value="50000">50 Kbps</option>
+        <option value="100000">100 Kbps</option>
+        <option value="125000">125 Kbps</option>
+        <option value="250000">250 Kbps</option>
+        <option value="500000" selected>500 Kbps</option>
+        <option value="800000">800 Kbps</option>
+        <option value="1000000">1 Mbps</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:210px">
+      <span data-i18n="work_mode">工作模式</span>
+      <select id="can-mode-sel">
+        <option value="normal" selected data-i18n="can_mode_normal">Normal（正常收发）</option>
+        <option value="listen" data-i18n="can_mode_listen">Listen-Only（只收）</option>
+        <option value="selftest" data-i18n="can_mode_self">Self-Test（内部回环）</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="can-apply-btn" style="align-self:flex-end" data-i18n="apply">应用</button>
+  </div>
+  <div class="card-help" data-i18n="can_mode_help">
+    Self-Test：无需终端电阻，帧自发自收，适合单节点调试。&emsp;Listen-Only：仅接收，不干扰总线。
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="send_frame">发送帧</div>
+  <div class="row" style="flex-wrap:wrap">
+    <div class="field" style="max-width:130px">
+      <span data-i18n="frame_id">帧 ID (HEX)</span>
+      <input type="text" id="can-id-input" placeholder="123" maxlength="8" style="font-family:var(--mono)" autocomplete="off">
+    </div>
+    <div class="field" style="max-width:70px">
+      <span>DLC</span>
+      <input type="number" id="can-dlc-input" min="0" max="8" data-i18n-ph="dlc_auto" placeholder="自动" style="font-family:var(--mono)">
+    </div>
+    <div class="field" style="max-width:230px">
+      <span data-i18n="data_hex">数据 (HEX，≤8字节)</span>
+      <input type="text" id="can-data-input" placeholder="DE AD BE EF" maxlength="23" style="font-family:var(--mono)" autocomplete="off">
+    </div>
+    <div class="field" style="max-width:90px;justify-content:flex-end;gap:8px">
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;white-space:nowrap">
+        <input type="checkbox" id="can-ext-chk" style="width:14px;height:14px"> <span data-i18n="ext_frame">扩展帧</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;white-space:nowrap">
+        <input type="checkbox" id="can-rtr-chk" style="width:14px;height:14px"> <span data-i18n="rtr_frame">RTR帧</span>
+      </label>
+    </div>
+    <button class="btn btn-primary" id="can-send-btn" style="align-self:flex-end" data-i18n="send">发送</button>
+  </div>
+  <div class="row" style="margin-top:10px;gap:8px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:12px;color:var(--text2);white-space:nowrap" data-i18n="auto_send">自动发送</span>
+    <input type="number" id="can-interval" value="1000" min="10" max="60000" style="width:72px" placeholder="ms">
+    <span style="font-size:12px;color:var(--text2)">ms</span>
+    <button class="btn btn-sm" id="can-auto-btn" data-i18n="start_btn">▶ 开始</button>
+    <div class="field" style="max-width:200px;margin-left:auto">
+      <span data-i18n="quick_tpl">快速模板</span>
+      <select id="can-preset-sel">
+        <option value="" data-i18n="tpl_none">── 选择模板 ──</option>
+        <option value="7DF|8|0200000000000000">OBD-II 读转速 (7DF)</option>
+        <option value="7DF|8|0100000000000000">OBD-II 获取支持 PID</option>
+        <option value="000|8|0000000000000000">全零帧 (ID=0x000)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="frame_log">帧日志</div>
+    <div class="row" style="gap:6px;align-items:center">
+      <span id="can-log-count" style="font-size:12px;color:var(--text2)">0 帧</span>
+      <button class="btn btn-sm" id="can-pause-btn" data-i18n="pause_btn">⏸ 暂停</button>
+      <button class="btn btn-sm" id="can-clear-btn" data-i18n="clear">清空</button>
+      <button class="btn btn-sm btn-ghost" id="can-export-btn" data-i18n="export_csv">导出 CSV</button>
+      <button class="btn btn-sm btn-ghost" onclick="showSaveModal('can')" data-i18n="save_to_flash">保存到Flash</button>
+    </div>
+  </div>
+  <div class="row" style="margin-bottom:10px;gap:8px;align-items:flex-end;flex-wrap:wrap">
+    <div class="field" style="max-width:130px">
+      <span data-i18n="id_filter">ID 过滤 (HEX)</span>
+      <input type="text" id="can-filter-id" data-i18n-ph="filter_no" placeholder="不过滤" style="font-family:var(--mono)" autocomplete="off">
+    </div>
+    <div class="field" style="max-width:130px">
+      <span data-i18n="filter_mask">掩码 (HEX)</span>
+      <input type="text" id="can-filter-mask" placeholder="1FFFFFFF" style="font-family:var(--mono)" autocomplete="off">
+    </div>
+    <button class="btn btn-sm" id="can-filter-btn" data-i18n="apply_filter">应用过滤</button>
+    <button class="btn btn-sm btn-ghost" id="can-filter-clear-btn" data-i18n="clear">清除</button>
+    <span id="can-filter-tag" style="font-size:12px;display:none"></span>
+  </div>
+  <div style="overflow-x:auto;max-height:360px;overflow-y:auto" id="can-log-wrap">
+    <table class="can-table">
+      <thead><tr>
+        <th data-i18n="can_th_ts">时间 (ms)</th>
+        <th data-i18n="can_th_dir">方向</th>
+        <th data-i18n="can_th_id">ID</th>
+        <th data-i18n="can_th_type">类型</th>
+        <th data-i18n="can_th_dlc">DLC</th>
+        <th data-i18n="can_th_data">数据 (HEX)</th>
+      </tr></thead>
+      <tbody id="can-log-body"></tbody>
+    </table>
+  </div>
+</div>

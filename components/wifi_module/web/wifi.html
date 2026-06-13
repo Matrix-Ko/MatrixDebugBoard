@@ -1,0 +1,63 @@
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title" data-i18n="wifi_title">WiFi 网络</div>
+      <div class="card-sub" data-i18n="wifi_sub">2.4 GHz · AP + STA 双模</div>
+    </div>
+    <button class="btn btn-sm btn-ghost" id="btn-refresh-wifi" data-i18n="refresh">刷新</button>
+  </div>
+  <dl class="kv-grid" id="wifi-status"><dt>—</dt><dd>—</dd></dl>
+  <div class="card-help">
+    AP <code id="ap-ssid-display">MatrixDebug</code> · IP <code>192.168.4.1</code>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title" data-i18n="ap_cfg_title">热点配置</div>
+      <div class="card-sub" data-i18n="ap_cfg_sub">修改 AP 模式的名称和密码</div>
+    </div>
+  </div>
+  <div class="form">
+    <label class="field">
+      <span data-i18n="ssid_name_lbl">热点名称 (SSID)</span>
+      <input type="text" id="ap-ssid-input" maxlength="31" autocomplete="off" placeholder="MatrixDebug">
+    </label>
+    <label class="field">
+      <span data-i18n="ap_pass_lbl">热点密码（留空保持不变）</span>
+      <input type="password" id="ap-pass-input" maxlength="63" autocomplete="new-password" placeholder="••••••••（WPA2，至少 8 位）" data-i18n-ph="ap_pass_ph">
+    </label>
+    <div class="row">
+      <button class="btn btn-primary" id="btn-save-ap-config" data-i18n="save_apply">保存并应用</button>
+    </div>
+  </div>
+  <div class="card-help" data-i18n="ap_cfg_help">修改后立即对新连接生效；已连接设备需重新扫描并加入新热点。</div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="available_nets">可用网络</div>
+    <button class="btn btn-primary btn-sm" id="btn-scan" data-i18n="scan">扫描</button>
+  </div>
+  <ul class="list" id="wifi-list"><li class="empty">—</li></ul>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-title" data-i18n="connect_title">连接</div></div>
+  <div class="form">
+    <label class="field">
+      <span data-i18n="ssid">SSID</span>
+      <input type="text" id="wifi-ssid" autocomplete="off" placeholder="SSID">
+    </label>
+    <label class="field">
+      <span data-i18n="password">密码</span>
+      <input type="password" id="wifi-pwd" autocomplete="new-password" placeholder="••••••••">
+    </label>
+    <div class="row">
+      <button class="btn btn-primary" id="btn-connect" data-i18n="connect">连接</button>
+      <button class="btn" id="btn-disconnect" data-i18n="disconnect">断开</button>
+      <button class="btn btn-ghost" id="btn-clear-wifi" data-i18n="clearSaved">清除已保存</button>
+    </div>
+  </div>
+</div>

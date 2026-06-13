@@ -1,0 +1,232 @@
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title" data-i18n="uart_title">UART 串口调试</div>
+      <div class="card-sub" data-i18n="uart_sub">UART0: TX=IO43 RX=IO44 &nbsp;│&nbsp; UART1: TX=IO17 RX=IO18</div>
+    </div>
+    <button class="btn btn-sm btn-ghost" onclick="uartRefreshAll()" data-i18n="refresh">刷新</button>
+  </div>
+</div>
+
+<nav class="tabs" style="margin-bottom:0;border-bottom:1px solid var(--border)">
+  <button class="tab-btn active" id="uart-tab-0" onclick="uartSwitchPort(0)">UART0</button>
+  <button class="tab-btn"        id="uart-tab-1" onclick="uartSwitchPort(1)">UART1</button>
+</nav>
+
+<!-- ===== UART0 ===== -->
+<div id="uart-panel-0">
+<div class="card" style="margin-top:0;border-top:none;border-radius:0 0 8px 8px">
+  <dl class="kv-grid" id="uart0-stat"><dt>—</dt><dd>—</dd></dl>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="port_cfg">端口设置</div>
+  <div class="row">
+    <div class="field" style="max-width:150px">
+      <span data-i18n="baud_rate">波特率</span>
+      <select id="uart0-baud-sel">
+        <option value="1200">1200</option><option value="2400">2400</option>
+        <option value="4800">4800</option><option value="9600">9600</option>
+        <option value="19200">19200</option><option value="38400">38400</option>
+        <option value="57600">57600</option>
+        <option value="115200" selected>115200</option>
+        <option value="230400">230400</option><option value="460800">460800</option>
+        <option value="921600">921600</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:70px">
+      <span data-i18n="data_bits">数据位</span>
+      <select id="uart0-bits-sel">
+        <option value="8" selected>8</option><option value="7">7</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:110px">
+      <span data-i18n="parity_bits">校验位</span>
+      <select id="uart0-parity-sel">
+        <option value="0" selected data-i18n="parity_none">无 (None)</option>
+        <option value="1" data-i18n="parity_even">偶 (Even)</option>
+        <option value="2" data-i18n="parity_odd">奇 (Odd)</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:70px">
+      <span data-i18n="stop_bits">停止位</span>
+      <select id="uart0-stop-sel">
+        <option value="1" selected>1</option><option value="2">2</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:120px">
+      <span data-i18n="disp_fmt">显示格式</span>
+      <select id="uart0-disp-sel">
+        <option value="hex" selected>HEX</option>
+        <option value="ascii">ASCII</option>
+        <option value="both">HEX + ASCII</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:120px">
+      <span data-i18n="send_fmt">发送格式</span>
+      <select id="uart0-fmt-sel">
+        <option value="hex" selected data-i18n="fmt_hex">HEX 字节流</option>
+        <option value="ascii" data-i18n="fmt_ascii">ASCII 文本</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:130px">
+      <span data-i18n="eol_ascii">行尾 (ASCII)</span>
+      <select id="uart0-eol-sel">
+        <option value="" selected data-i18n="eol_none">无</option>
+        <option value="0D">CR  (\r)</option>
+        <option value="0A">LF  (\n)</option>
+        <option value="0D0A">CRLF (\r\n)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="uartApplyCfg(0)" style="align-self:flex-end" data-i18n="apply">应用</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="txrx_log">收发日志</div>
+    <div class="row" style="gap:6px;align-items:center">
+      <span id="uart0-log-count" style="font-size:12px;color:var(--text2)">0 帧</span>
+      <button class="btn btn-sm" id="uart0-pause-btn" data-i18n="pause_btn">⏸ 暂停</button>
+      <button class="btn btn-sm" onclick="clearConsoleEx('uart0-console','uart0-log-count')" data-i18n="clear">清空</button>
+      <button class="btn btn-sm btn-ghost" onclick="exportLog('uart0-console','uart0')" data-i18n="export_log">导出</button>
+      <button class="btn btn-sm btn-ghost" onclick="showSaveModal('uart0')" data-i18n="save_to_flash">保存到Flash</button>
+    </div>
+  </div>
+  <div class="console" id="uart0-console"></div>
+  <hr class="divider" style="margin:12px 0">
+  <div class="row">
+    <input type="text" id="uart0-send-input" placeholder="HEX: 01 02 03  或切换 ASCII 模式" data-i18n-ph="uart_input_ph" style="flex:1;font-family:var(--mono)" autocomplete="off" spellcheck="false">
+    <button class="btn btn-primary" onclick="uartSend(0)" data-i18n="send">发送</button>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:12px;color:var(--text2);white-space:nowrap" data-i18n="auto_send">自动发送</span>
+    <input type="number" id="uart0-interval" value="1000" min="20" max="60000" style="width:72px" placeholder="ms">
+    <span style="font-size:12px;color:var(--text2)">ms ×</span>
+    <input type="number" id="uart0-auto-count" value="-1" min="-1" max="9999" style="width:56px" title="-1 = 无限次">
+    <button class="btn btn-sm" id="uart0-auto-btn" data-i18n="start_btn">▶ 开始</button>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(0,'41 54 0D 0A')">AT\r\n</button>
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(0,'0D 0A')">CRLF</button>
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(0,'FF FF FF FF')">FF×4</button>
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(0,'00 00 00 00')">00×4</button>
+  </div>
+  <div class="hist-panel">
+    <div class="hist-header">
+      <span class="hist-label" data-i18n="send_hist">发送历史</span>
+      <button class="btn btn-sm btn-ghost" id="uart0-hist-clear-btn" data-i18n="clear">清空</button>
+    </div>
+    <div class="hist-list" id="uart0-hist-panel"></div>
+  </div>
+</div>
+</div><!-- /uart-panel-0 -->
+
+<!-- ===== UART1 ===== -->
+<div id="uart-panel-1" style="display:none">
+<div class="card" style="margin-top:0;border-top:none;border-radius:0 0 8px 8px">
+  <dl class="kv-grid" id="uart1-stat"><dt>—</dt><dd>—</dd></dl>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:12px" data-i18n="port_cfg">端口设置</div>
+  <div class="row">
+    <div class="field" style="max-width:150px">
+      <span data-i18n="baud_rate">波特率</span>
+      <select id="uart1-baud-sel">
+        <option value="1200">1200</option><option value="2400">2400</option>
+        <option value="4800">4800</option><option value="9600">9600</option>
+        <option value="19200">19200</option><option value="38400">38400</option>
+        <option value="57600">57600</option>
+        <option value="115200" selected>115200</option>
+        <option value="230400">230400</option><option value="460800">460800</option>
+        <option value="921600">921600</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:70px">
+      <span data-i18n="data_bits">数据位</span>
+      <select id="uart1-bits-sel">
+        <option value="8" selected>8</option><option value="7">7</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:110px">
+      <span data-i18n="parity_bits">校验位</span>
+      <select id="uart1-parity-sel">
+        <option value="0" selected data-i18n="parity_none">无 (None)</option>
+        <option value="1" data-i18n="parity_even">偶 (Even)</option>
+        <option value="2" data-i18n="parity_odd">奇 (Odd)</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:70px">
+      <span data-i18n="stop_bits">停止位</span>
+      <select id="uart1-stop-sel">
+        <option value="1" selected>1</option><option value="2">2</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:120px">
+      <span data-i18n="disp_fmt">显示格式</span>
+      <select id="uart1-disp-sel">
+        <option value="hex" selected>HEX</option>
+        <option value="ascii">ASCII</option>
+        <option value="both">HEX + ASCII</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:120px">
+      <span data-i18n="send_fmt">发送格式</span>
+      <select id="uart1-fmt-sel">
+        <option value="hex" selected data-i18n="fmt_hex">HEX 字节流</option>
+        <option value="ascii" data-i18n="fmt_ascii">ASCII 文本</option>
+      </select>
+    </div>
+    <div class="field" style="max-width:130px">
+      <span data-i18n="eol_ascii">行尾 (ASCII)</span>
+      <select id="uart1-eol-sel">
+        <option value="" selected data-i18n="eol_none">无</option>
+        <option value="0D">CR  (\r)</option>
+        <option value="0A">LF  (\n)</option>
+        <option value="0D0A">CRLF (\r\n)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="uartApplyCfg(1)" style="align-self:flex-end" data-i18n="apply">应用</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title" data-i18n="txrx_log">收发日志</div>
+    <div class="row" style="gap:6px;align-items:center">
+      <span id="uart1-log-count" style="font-size:12px;color:var(--text2)">0 帧</span>
+      <button class="btn btn-sm" id="uart1-pause-btn" data-i18n="pause_btn">⏸ 暂停</button>
+      <button class="btn btn-sm" onclick="clearConsoleEx('uart1-console','uart1-log-count')" data-i18n="clear">清空</button>
+      <button class="btn btn-sm btn-ghost" onclick="exportLog('uart1-console','uart1')" data-i18n="export_log">导出</button>
+      <button class="btn btn-sm btn-ghost" onclick="showSaveModal('uart1')" data-i18n="save_to_flash">保存到Flash</button>
+    </div>
+  </div>
+  <div class="console" id="uart1-console"></div>
+  <hr class="divider" style="margin:12px 0">
+  <div class="row">
+    <input type="text" id="uart1-send-input" placeholder="HEX: 01 02 03  或切换 ASCII 模式" data-i18n-ph="uart_input_ph" style="flex:1;font-family:var(--mono)" autocomplete="off" spellcheck="false">
+    <button class="btn btn-primary" onclick="uartSend(1)" data-i18n="send">发送</button>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:12px;color:var(--text2);white-space:nowrap" data-i18n="auto_send">自动发送</span>
+    <input type="number" id="uart1-interval" value="1000" min="20" max="60000" style="width:72px" placeholder="ms">
+    <span style="font-size:12px;color:var(--text2)">ms ×</span>
+    <input type="number" id="uart1-auto-count" value="-1" min="-1" max="9999" style="width:56px" title="-1 = 无限次">
+    <button class="btn btn-sm" id="uart1-auto-btn" data-i18n="start_btn">▶ 开始</button>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(1,'41 54 0D 0A')">AT\r\n</button>
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(1,'0D 0A')">CRLF</button>
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(1,'FF FF FF FF')">FF×4</button>
+    <button class="btn btn-sm btn-ghost" onclick="uartFill(1,'00 00 00 00')">00×4</button>
+  </div>
+  <div class="hist-panel">
+    <div class="hist-header">
+      <span class="hist-label" data-i18n="send_hist">发送历史</span>
+      <button class="btn btn-sm btn-ghost" id="uart1-hist-clear-btn" data-i18n="clear">清空</button>
+    </div>
+    <div class="hist-list" id="uart1-hist-panel"></div>
+  </div>
+</div>
+</div><!-- /uart-panel-1 -->

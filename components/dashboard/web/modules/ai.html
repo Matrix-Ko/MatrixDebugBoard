@@ -1,0 +1,89 @@
+<!-- AI 设置 -->
+<div class="card">
+  <div class="card-header" style="cursor:pointer" id="ai-cfg-hdr">
+    <div>
+      <div class="card-title" data-i18n="ai_cfg_title">AI 设置</div>
+      <div class="card-sub" data-i18n="ai_cfg_sub">配置 API 提供商、Key 和模型</div>
+    </div>
+    <span id="ai-cfg-arrow" style="color:var(--text2);transition:transform .2s">▼</span>
+  </div>
+  <div id="ai-cfg-body" style="display:none;margin-top:12px">
+    <div class="form-row">
+      <label data-i18n="ai_provider">API 提供商</label>
+      <select id="ai-provider-sel">
+        <option value="openai" data-i18n="ai_prov_openai">OpenAI / 兼容接口</option>
+        <option value="anthropic" data-i18n="ai_prov_anthropic">Anthropic (Claude)</option>
+      </select>
+    </div>
+    <div class="form-row" id="ai-baseurl-row">
+      <label data-i18n="ai_base_url">API 端点 URL</label>
+      <input id="ai-base-url" type="text" placeholder="https://api.openai.com/v1">
+    </div>
+    <div class="form-row">
+      <label data-i18n="ai_key_lbl">API Key</label>
+      <input id="ai-api-key" type="password" placeholder="sk-...">
+    </div>
+    <div class="form-row">
+      <label data-i18n="ai_model_lbl">模型</label>
+      <input id="ai-model" type="text" placeholder="gpt-4o / claude-sonnet-4-6">
+    </div>
+    <div class="form-row">
+      <label data-i18n="ai_sys_lbl">系统提示 (System Prompt)</label>
+      <textarea id="ai-sys-prompt" rows="3"></textarea>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary btn-sm" id="ai-save-cfg" data-i18n="save_cfg">保存配置</button>
+      <button class="btn btn-sm btn-ghost" id="ai-test-btn" data-i18n="ai_test">测试连接</button>
+    </div>
+    <div class="card-help" data-i18n="ai_cfg_help">
+      OpenAI: 填写 base_url + sk- 开头的 Key。Anthropic: 选 Anthropic，填写 claude- 模型名和 API Key。
+      也支持任何 OpenAI 兼容代理（如 DeepSeek、Ollama 等）。
+    </div>
+  </div>
+</div>
+
+<!-- 快速分析 -->
+<div class="card">
+  <div class="card-title" style="margin-bottom:10px" data-i18n="ai_quick_title">快速分析</div>
+  <div class="row">
+    <button class="btn btn-sm" onclick="aiQuickAnalyze('rs485')">RS485</button>
+    <button class="btn btn-sm" onclick="aiQuickAnalyze('uart0')">UART0</button>
+    <button class="btn btn-sm" onclick="aiQuickAnalyze('uart1')">UART1</button>
+    <button class="btn btn-sm" onclick="aiQuickAnalyze('can')">CAN</button>
+  </div>
+  <div class="card-help" style="margin-top:8px" data-i18n="ai_quick_help">
+    点击自动附加该通道最近的数据帧，发给 AI 分析协议内容。
+  </div>
+</div>
+
+<!-- 对话区 -->
+<div class="card" style="display:flex;flex-direction:column">
+  <div class="card-header">
+    <div class="card-title" data-i18n="ai_chat_title">AI 对话</div>
+    <button class="btn btn-sm btn-ghost" id="ai-clear-btn" data-i18n="ai_clear">清空</button>
+  </div>
+
+  <div id="ai-chat-log" class="ai-chat-log"></div>
+
+  <!-- 附加数据栏 -->
+  <div class="ai-ctx-bar">
+    <span data-i18n="ai_ctx_lbl">附加数据:</span>
+    <select id="ai-ctx-channel">
+      <option value="">--</option>
+      <option value="rs485">RS485</option>
+      <option value="uart0">UART0</option>
+      <option value="uart1">UART1</option>
+      <option value="can">CAN</option>
+    </select>
+    <input type="number" id="ai-ctx-count" value="20" min="5" max="100" style="width:52px">
+    <span data-i18n="frames">帧</span>
+    <button class="btn btn-sm" id="ai-attach-btn" data-i18n="ai_attach">附加</button>
+  </div>
+
+  <!-- 输入框 -->
+  <div class="ai-input-row">
+    <textarea id="ai-input" class="ai-input" data-i18n-ph="ai_input_ph" rows="2"></textarea>
+    <button class="btn btn-primary" id="ai-send-btn" data-i18n="send">发送</button>
+  </div>
+  <div class="card-help" data-i18n="ai_enter_hint">Ctrl+Enter 发送 · AI 具备连续对话和工具调用能力</div>
+</div>

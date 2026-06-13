@@ -1,0 +1,24 @@
+# ESP-IDF build output
+build/
+
+# OTA server runtime files (firmware binaries are not versioned here)
+OTA_Server/firmware/
+OTA_Server/matrixdebugboard.bin
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+OTA_Server/.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
