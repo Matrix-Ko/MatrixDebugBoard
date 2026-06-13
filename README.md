@@ -1,6 +1,7 @@
 # MatrixDebugBoard
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<<<<<<< HEAD
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![ESP-IDF](https://img.shields.io/badge/ESP--IDF-v5.x-blue)](https://github.com/espressif/esp-idf)
 [![Platform](https://img.shields.io/badge/Platform-ESP32--S3-orange)](https://www.espressif.com/)
 [![Build](https://img.shields.io/badge/build-passing-brightgreen)]()
@@ -96,10 +97,47 @@ matrixdebugboard/
 ├── sdkconfig.defaults              # ESP-IDF default configuration
 ├── LICENSE                         # MIT License
 └── .gitignore
+=======
+> 🚧 **正在整理中 / Organizing** — 资料整理完成后将上传代码和文档 / Code and documentation will be uploaded once organized.
+
+---
+
+## 📖 简介 / Introduction
+
+**MatrixDebugBoard** 是一个基于 ESP32 的调试开发板项目，集成了多种硬件接口和调试功能，旨在为嵌入式开发提供一个高效、便捷的硬件调试工具。
+
+**MatrixDebugBoard** is an ESP32-based debug development board project that integrates multiple hardware interfaces and debugging features, designed to provide an efficient and convenient hardware debugging tool for embedded development.
+
+---
+
+## ✨ 主要功能 / Features
+
+*待整理上传 / To be organized and uploaded*
+
+- 基于 ESP32 主控芯片 / Based on ESP32 main controller
+- 多功能调试接口 / Multi-functional debugging interfaces
+- OTA 远程升级支持 / OTA remote firmware update support
+- 多种通信协议兼容 / Compatible with multiple communication protocols
+
+---
+
+## 📂 项目结构 / Project Structure
+
+*待整理上传 / To be organized and uploaded*
+
+```
+MatrixDebugBoard/
+├── Firmware/          # 固件源代码 / Firmware source code
+├── hardware/          # 硬件设计文件 / Hardware design files
+├── OTA_Server/        # OTA 升级服务器 / OTA update server
+├── docs/              # 文档资料 / Documentation
+└── tools/             # 工具脚本 / Utility scripts
+>>>>>>> bc514964b058eb445dabf33d31d0cf1a1c9b127d
 ```
 
 ---
 
+<<<<<<< HEAD
 ## Components
 
 | Component | Description |
@@ -262,4 +300,19 @@ idf.py -p PORT monitor
 
 ## License
 
-[MIT](LICENSE) © 2026 MatrixDebugBoard
+This work is licensed under a **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License**.
+
+[![CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png)](LICENSE)
+
+- ✅ **Share** — copy and redistribute the material in any medium or format
+- ✅ **Adapt** — remix, transform, and build upon the material
+- ❌ **NonCommercial** — You may not use the material for commercial purposes
+- 🔗 **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license
+
+Full license text is available in the [LICENSE](./LICENSE) file.
+
+---
+
+## Contact
+
+- **Author**: [Matrix-Ko](https://github.com/Matrix-Ko)
